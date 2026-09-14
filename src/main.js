@@ -35,6 +35,12 @@ const pauseOverlay = document.querySelector('#pause-overlay');
 const toast = document.querySelector('#toast');
 const toastText = document.querySelector('#toast-text');
 const controlsCard = document.querySelector('#controls-card');
+const helpButton = document.querySelector('#help-button');
+const timeReadout = document.querySelector('#time-readout');
+const missionProgress = document.querySelector('.mission-progress');
+const missionProgressFill = missionProgress.querySelector('span');
+const missionCount = document.querySelector('#mission-count');
+const tipText = document.querySelector('#tip-text');
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x8ab4b1);
@@ -254,6 +260,8 @@ let isLocked = false;
 let selectedIndex = 0;
 const keys = new Set();
 const inventory = { grass: 12, dirt: 20, stone: 18, wood: 8, leaves: 16, sand: 10, brick: 6 };
+const missionGoal = 3;
+let blocksGathered = 0;
 
 function updateCamera() {
   camera.position.set(player.x, player.y + EYE_HEIGHT, player.z);
@@ -342,6 +350,18 @@ function showToast(message) {
   showToast.timeout = window.setTimeout(() => toast.classList.remove('show'), 1800);
 }
 
+function updateMission() {
+  const progress = Math.min(blocksGathered / missionGoal, 1);
+  missionProgressFill.style.width = `${progress * 100}%`;
+  missionProgress.setAttribute('aria-valuenow', blocksGathered.toString());
+  missionCount.textContent = `${Math.min(blocksGathered, missionGoal).toString().padStart(2, '0')} / ${missionGoal.toString().padStart(2, '0')}`;
+  if (blocksGathered >= missionGoal) {
+    tipText.textContent = 'The first morning is yours. Keep shaping the ridge.';
+  } else if (blocksGathered > 0) {
+    tipText.textContent = `${missionGoal - blocksGathered} more block${missionGoal - blocksGathered === 1 ? '' : 's'} to complete your first log.`;
+  }
+}
+
 function mineBlock() {
   const hit = currentTarget();
   if (!hit) return;
@@ -352,9 +372,11 @@ function mineBlock() {
   }
   removeBlock(x, y, z);
   inventory[type] = (inventory[type] || 0) + 1;
+  blocksGathered += 1;
   refreshAround(x, y, z);
   blockReadout.textContent = blocks.size.toLocaleString();
   renderHotbar();
+  updateMission();
   showToast(`Mined ${BLOCKS[type].label.toLowerCase()}`);
 }
 
@@ -447,8 +469,14 @@ document.addEventListener('keydown', (event) => {
 document.addEventListener('keyup', (event) => keys.delete(event.code));
 
 // The help card is useful both before and after pointer lock, and does not interrupt play.
-document.querySelector('#help-button').addEventListener('click', () => controlsCard.classList.toggle('open'));
-document.querySelector('#close-help').addEventListener('click', () => controlsCard.classList.remove('open'));
+helpButton.addEventListener('click', () => {
+  const isOpen = controlsCard.classList.toggle('open');
+  helpButton.setAttribute('aria-expanded', isOpen.toString());
+});
+document.querySelector('#close-help').addEventListener('click', () => {
+  controlsCard.classList.remove('open');
+  helpButton.setAttribute('aria-expanded', 'false');
+});
 pauseOverlay.addEventListener('click', requestLock);
 
 window.addEventListener('resize', () => {
@@ -458,6 +486,7 @@ window.addEventListener('resize', () => {
 });
 
 renderHotbar();
+updateMission();
 updateCamera();
 updateCoordinates();
 showToast('Meadow Ridge is ready');
@@ -468,6 +497,10 @@ function animate() {
   requestAnimationFrame(animate);
   const delta = Math.min(clock.getDelta(), 0.05);
   elapsed += delta;
+  const totalMinutes = (8 * 60 + 42 + Math.floor(elapsed / 5)) % (24 * 60);
+  const hours = Math.floor(totalMinutes / 60).toString().padStart(2, '0');
+  const minutes = (totalMinutes % 60).toString().padStart(2, '0');
+  timeReadout.textContent = `DAY 01 · ${hours}:${minutes}`;
   updatePlayer(delta);
   updateCamera();
   updateSelection();
