@@ -30,6 +30,7 @@ body {
 }
 
 button { font: inherit; }
+button:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
 
 #viewport { position: absolute; inset: 0; }
 #viewport canvas { display: block; width: 100%; height: 100%; }
@@ -87,7 +88,7 @@ button { font: inherit; }
 .mission-card h1 em { color: #f3c678; font-style: normal; }
 .mission-card p { font-size: 12px; color: #a7b5ad; line-height: 1.55; margin: 0 0 18px; max-width: 175px; }
 .mission-progress { height: 3px; background: rgba(239, 247, 230, .12); position: relative; }
-.mission-progress span { position: absolute; height: 100%; width: 33%; background: var(--amber); }
+.mission-progress span { position: absolute; height: 100%; width: 0; background: var(--amber); transition: width .35s ease; }
 .mission-foot { display: flex; justify-content: space-between; margin-top: 9px; font: 8px var(--font-mono); letter-spacing: .1em; color: #7a8b84; }
 .mission-foot strong { color: #d2dfd0; font-weight: 400; }
 
@@ -135,6 +136,7 @@ kbd.mouse-key { min-width: 30px; background: #2d382f; color: #efcf96; border-col
 .hotbar { display: flex; gap: 4px; padding: 5px; background: rgba(5, 13, 17, .79); border: 1px solid rgba(241, 249, 234, .25); box-shadow: 0 9px 35px rgba(0, 0, 0, .27); }
 .hotbar-slot { width: 47px; height: 47px; border: 1px solid rgba(225, 242, 224, .19); background: rgba(211, 232, 209, .08); position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: .16s; }
 .hotbar-slot:hover { background: rgba(213, 241, 215, .17); }
+.hotbar-slot:focus-visible { z-index: 1; outline-offset: 2px; }
 .hotbar-slot.selected { border: 2px solid var(--amber); background: rgba(244, 197, 108, .12); box-shadow: 0 0 0 1px rgba(244, 197, 108, .17), inset 0 0 15px rgba(244, 197, 108, .08); transform: translateY(-3px); }
 .hotbar-slot .slot-number { position: absolute; top: 3px; left: 5px; color: #b5c2b6; font: 8px var(--font-mono); }
 .hotbar-slot.selected .slot-number { color: var(--amber); }
@@ -175,4 +177,16 @@ kbd.mouse-key { min-width: 30px; background: #2d382f; color: #efcf96; border-col
   .hotbar { gap: 2px; padding: 4px; }
   .block-icon { width: 21px; height: 21px; }
   .interaction-hint { top: 58%; }
+}
+
+@media (max-width: 460px) {
+  .mission-card { width: 202px; padding: 17px 18px 15px; }
+  .mission-card h1 { font-size: 24px; margin-top: 13px; }
+  .location-card { width: 164px; padding: 13px 14px 11px; }
+  .coordinates { margin-left: 22px; gap: 8px; }
+  .hotbar-slot { width: 34px; height: 39px; }
+  .hotbar-slot .slot-number { top: 2px; left: 3px; }
+  .hotbar-slot .slot-count { bottom: 2px; right: 3px; }
+  .block-icon { width: 18px; height: 18px; }
+  .selected-name { font-size: 9px; }
 }
