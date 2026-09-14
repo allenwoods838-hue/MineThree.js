@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#08141c" />
+    <title>MineThree — a tiny voxel world</title>
+  </head>
+  <body>
+    <div id="game" aria-label="MineThree voxel world">
+      <div id="viewport"></div>
+
+      <div class="hud" aria-hidden="true">
+        <header class="topbar">
+          <div class="brand">
+            <div class="brand-mark"><span></span><span></span><span></span><span></span></div>
+            <div>
+              <div class="brand-name">MINE<span>THREE</span></div>
+              <div class="brand-subtitle">A SMALL VOXEL WORLD</div>
+            </div>
+          </div>
+
+          <div class="world-status">
+            <span class="status-dot"></span>
+            <span>LOCAL WORLD</span>
+            <i></i>
+            <strong id="time-readout">DAY 01 · 08:42</strong>
+          </div>
+
+          <div class="top-actions">
+            <div class="tiny-stat"><span class="tiny-icon grid-icon"></span><strong id="block-readout">0</strong><small>BLOCKS</small></div>
+            <div class="tiny-stat"><span class="tiny-icon ping-icon"></span><strong>12ms</strong><small>LATENCY</small></div>
+            <button id="help-button" class="icon-button" type="button" aria-label="Show controls">?</button>
+          </div>
+        </header>
+
+        <aside class="mission-card panel-card">
+          <div class="eyebrow"><span class="eyebrow-line"></span> FIRST MORNING</div>
+          <h1>Shape the<br /><em>landscape.</em></h1>
+          <p>Gather a few blocks and make this quiet little world yours.</p>
+          <div class="mission-progress"><span></span></div>
+          <div class="mission-foot"><span>EXPLORER'S LOG</span><strong>01 / 03</strong></div>
+        </aside>
+
+        <aside class="location-card panel-card">
+          <div class="location-heading"><span class="pin-icon">⌖</span><span>MEADOW RIDGE</span></div>
+          <div class="coordinates"><span id="coord-x">X 12</span><span id="coord-y">Y 08</span><span id="coord-z">Z 18</span></div>
+          <div class="biome-row"><span class="biome-swatch"></span><span>GRASSLAND BIOME</span><span class="sun-symbol">☼</span></div>
+        </aside>
+
+        <div class="crosshair"><span></span><span></span><span></span><span></span><b></b></div>
+
+        <div class="interaction-hint" id="interaction-hint">
+          <div class="mouse-illustration"><span></span><i></i></div>
+          <div><strong>CLICK TO ENTER WORLD</strong><small>WASD to move <b>·</b> mouse to look</small></div>
+        </div>
+
+        <div class="controls-card panel-card" id="controls-card">
+          <div class="controls-header"><span>QUICK CONTROLS</span><button id="close-help" type="button">×</button></div>
+          <div class="control-row"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>move around</span></div>
+          <div class="control-row"><kbd>SPACE</kbd><span>jump</span></div>
+          <div class="control-row"><kbd class="mouse-key">LMB</kbd><span>mine block</span><kbd class="mouse-key">RMB</kbd><span>place block</span></div>
+        </div>
+
+        <div class="bottom-hud">
+          <div class="tip-line"><span class="tip-star">✦</span><span id="tip-text">A small world is a good place to begin.</span></div>
+          <div class="hotbar-wrap">
+            <div class="selected-name" id="selected-name">GRASS BLOCK</div>
+            <div class="hotbar" id="hotbar"></div>
+          </div>
+          <div class="version-mark">BUILD 0.1.0 <span></span> LOCAL</div>
+        </div>
+
+        <div class="toast" id="toast"><span class="toast-icon">✦</span><span id="toast-text">World generated</span></div>
+        <div class="vignette"></div>
+      </div>
+
+      <div class="pause-overlay" id="pause-overlay">
+        <div class="pause-inner">
+          <div class="pause-mark">II</div>
+          <h2>WORLD PAUSED</h2>
+          <p>Click anywhere to continue exploring.</p>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
